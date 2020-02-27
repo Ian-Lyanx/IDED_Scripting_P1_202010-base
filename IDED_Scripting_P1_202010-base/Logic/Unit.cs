@@ -28,15 +28,80 @@
             BaseDef = _def;
             BaseSpd = _spd;
             MoveRange = _moveRange;
+
         }
 
         public virtual bool Interact(Unit otherUnit)
         {
-            return false;
+            bool cambio = false;
+
+            if (UnitClass == EUnitClass.Villager)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Soldier && otherUnit.UnitClass == EUnitClass.Villager)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Squire && otherUnit.UnitClass == EUnitClass.Villager)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Ranger && otherUnit.UnitClass == EUnitClass.Mage)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Mage && otherUnit.UnitClass == EUnitClass.Mage)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Imp && otherUnit.UnitClass == EUnitClass.Dragon)
+            {
+                cambio = false;
+            }
+            else if (UnitClass == EUnitClass.Orc && otherUnit.UnitClass == EUnitClass.Dragon)
+            {
+                cambio = false;
+            }
+            else cambio = true;            
+              
+            return cambio;
+
+            
         }
 
-        public virtual bool Interact(Prop prop) => false;
+        public virtual bool Interact(Prop prop)
+        {
+            bool cambio = false;
 
-        public bool Move(Position targetPosition) => false;
+            if(UnitClass == EUnitClass.Villager)
+            {
+                cambio = true;
+            }
+
+            return cambio;
+        }
+
+        public bool Move(Position targetPosition)
+        {
+            bool mover = false;
+
+            int sumaT = targetPosition.x + targetPosition.y;
+            int sumaC = CurrentPosition.x + CurrentPosition.y;
+
+            if (CurrentPosition.x == targetPosition.x && CurrentPosition.y == targetPosition.y)
+            {
+                mover = false;
+            }
+            else if (sumaC + MoveRange >= sumaT)
+            {
+                mover = true;
+                CurrentPosition = targetPosition;
+            }
+
+            return mover;
+        }
+        
+        
     }
 }
